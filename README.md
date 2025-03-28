@@ -28,7 +28,7 @@ El proyecto utiliza un enfoque basado en contenedores Docker con los siguientes 
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/meli-challenge.git
+   git clone https://github.com/Ghostsecure/Desadio-Meli.git
    cd meli-challenge
    ```
 
@@ -47,7 +47,7 @@ El proyecto utiliza un enfoque basado en contenedores Docker con los siguientes 
 1. Clonar el repositorio:
    - Utilizando Git Bash:
      ```bash
-     git clone https://github.com/tu-usuario/meli-challenge.git
+     git clone https://github.com/Ghostsecure/Desadio-Meli.git
      cd meli-challenge
      ```
    - O descargar como ZIP desde GitHub y descomprimirlo
