@@ -23,6 +23,7 @@ El proyecto utiliza un enfoque basado en contenedores Docker con los siguientes 
 - Asegurarse de tener Docker y Docker Compose instalados y funcionando correctamente
 - Git instalado o posibilidad de descargar el repositorio como ZIP
 - Puertos disponibles: 3306, 9200, 25601
+- Renombrar el archivo env.txt a .env de la carpeta Aplicacion
 
 ### Para usuarios de Linux
 
