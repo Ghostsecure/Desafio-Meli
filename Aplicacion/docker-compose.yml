@@ -1,0 +1,114 @@
+
+
+services:
+  # Base de datos MySQL
+  mysql:
+    image: ${MYSQL_IMAGE}
+    container_name: ${MYSQL_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "${HOST_BIND_IP}:${MYSQL_EXPOSED_PORT}:${MYSQL_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      meli_network:
+        ipv4_address: ${MYSQL_IP_ADDRESS}
+
+  # Elasticsearch
+  elasticsearch:
+    image: ${ES_IMAGE}
+    container_name: ${ES_CONTAINER_NAME}
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=${ES_JAVA_OPTS}"
+      - ELASTIC_USERNAME=${ES_USERNAME}
+      - ELASTIC_PASSWORD=${ES_PASSWORD}
+    ports:
+      - "${HOST_BIND_IP}:${ES_EXPOSED_PORT}:${ES_PORT}"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      meli_network:
+        ipv4_address: ${ES_IP_ADDRESS}
+
+  # Kibana para visualización
+  kibana:
+    image: ${KIBANA_IMAGE}
+    container_name: ${KIBANA_CONTAINER_NAME}
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=${ES_SCHEME}://${ES_HOST}:${ES_PORT}
+      - ELASTICSEARCH_USERNAME=${ES_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ES_PASSWORD}
+    ports:
+      - "${HOST_BIND_IP}:${KIBANA_EXPOSED_PORT}:${KIBANA_PORT}"
+    networks:
+      meli_network:
+        ipv4_address: ${KIBANA_IP_ADDRESS}
+    depends_on:
+      - elasticsearch
+
+  # Aplicación Python
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${APP_CONTAINER_NAME}
+    restart: always
+    volumes:
+      - ./app:/app
+      - ./data:/data
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - ES_HOST=${ES_HOST}
+      - ES_PORT=${ES_PORT}
+      - ES_USERNAME=${ES_USERNAME}
+      - ES_PASSWORD=${ES_PASSWORD}
+      - ES_INDEX_PREFIX=${ES_INDEX_PREFIX}
+      - ES_SCHEME=${ES_SCHEME}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - DEBUG=${DEBUG}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - DATA_RETENTION_MONTHS=${DATA_RETENTION_MONTHS}
+      - BATCH_SIZE=${BATCH_SIZE}
+      - REPORT_FREQUENCY=${REPORT_FREQUENCY}
+      - API_KEY=${API_KEY}
+      - API_SECRET=${API_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - HTTP_PROXY=${HTTP_PROXY}
+      - HTTPS_PROXY=${HTTPS_PROXY}
+      - NO_PROXY=${NO_PROXY}
+    ports:
+      - "${HOST_BIND_IP}:${APP_EXPOSED_PORT}:${APP_PORT}"
+    networks:
+      meli_network:
+        ipv4_address: ${APP_IP_ADDRESS}
+    depends_on:
+      - mysql
+      - elasticsearch
+
+networks:
+  meli_network:
+    name: ${NETWORK_NAME}
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET_PREFIX}
+
+volumes:
+  mysql_data:
+  elasticsearch_data:
+  pentaho_data:
+  pentaho_logs:

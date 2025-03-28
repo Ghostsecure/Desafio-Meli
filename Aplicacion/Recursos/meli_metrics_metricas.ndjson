@@ -1,0 +1,2 @@
+{"attributes":{"fieldAttrs":"{}","fields":"[]","runtimeFieldMap":"{}","timeFieldName":"MONTH","title":"meli_metrics_metricas","typeMeta":"{}"},"coreMigrationVersion":"7.14.0","id":"9fabff00-0b94-11f0-a5d4-11f109abdaba","migrationVersion":{"index-pattern":"7.11.0"},"references":[],"type":"index-pattern","updated_at":"2025-03-28T05:22:21.040Z","version":"WzU4OSwxXQ=="}
+{"excludedObjects":[],"excludedObjectsCount":0,"exportedCount":1,"missingRefCount":0,"missingReferences":[]}
