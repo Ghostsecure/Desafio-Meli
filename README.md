@@ -88,6 +88,7 @@ Una vez que el sistema esté en funcionamiento:
 Desafio Meli_/
   |_ Aplicacion/
       |_ .env
+      |_ Recursos
       |_ docker-compose.yml
       |_ Dockerfile
       |_ requirements.txt 
